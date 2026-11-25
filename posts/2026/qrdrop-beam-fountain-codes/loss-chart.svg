@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img"
+     aria-label="Grouped column chart. Frames the sender must emit before the file is complete, as a multiple of the 1,748 blocks in a 1 MiB payload, at four frame-loss rates, averaged over 20 seeds. At 0% loss the fountain code costs 1.05 times N and numbered chunks on a loop cost 1.00. At 10% loss the fountain code costs 1.58 and the loop 3.89. At 30%, 2.06 against 7.02. At 50%, 2.79 against 11.22. The loop's cost nearly quadruples between 0% and 10% and keeps climbing; the fountain code stays inside a small factor across the whole range.">
+  <!--
+    Source for loss-chart.light.png / loss-chart.dark.png.
+    Rebuild both with: node scripts/make-figures.js qrdrop-beam-fountain-codes
+
+    Every number here is a 20-seed mean printed by scripts/beam-loss-bench.mjs,
+    the same run as the post's table — regenerate both together, never by hand.
+    (The first version of this chart showed 8.3x at 10% for the loop; that number
+    modelled random chunk picks, not an in-order loop. See the post's correction.)
+    The y scale is linear on purpose: the 1.00x -> 3.89x jump between 0% and 10%
+    loss IS the argument, and a log axis would flatten exactly the thing the
+    figure exists to show.
+
+    Form is emphasis, not categorical: one accent for the series the post is
+    about, a deliberately recessive gray for the foil. The accent pair was
+    picked by running the data-viz validator against the surfaces this page
+    ACTUALLY paints (#ffffff light, #242220 dark) rather than by eye. Both
+    matter: Blowfish paints light mode pure white, not the scheme's neutral-50,
+    and a teal candidate that looked fine measured a protanopic delta-E of 0.4
+    against the gray.
+  -->
+  <style>
+    svg {
+      --surface:   #ffffff;
+      --accent:    #4f46e5;
+      --foil:      #8f8b85;
+      --ink:       #242220;
+      --secondary: #4c4a48;
+      --muted:     #605e5c;
+      --grid:      #e5e3df;
+      --axis:      #c9c5bf;
+    }
+    svg.dark {
+      --surface:   #242220;
+      --accent:    #7c74ee;
+      --foil:      #8f8b85;
+      --ink:       #fafaf9;
+      --secondary: #dcdbd9;
+      --muted:     #a8a5a0;
+      --grid:      #383634;
+      --axis:      #4c4a48;
+    }
+    text {
+      font-family: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+      fill: var(--secondary);
+    }
+    .eyebrow  { font-size: 19px; font-weight: 700; letter-spacing: 2.6px; fill: var(--muted); }
+    .title    { font-size: 31px; font-weight: 700; fill: var(--ink); letter-spacing: -0.4px; }
+    .legend   { font-size: 19px; font-weight: 500; }
+    .tick     { font-size: 18px; font-weight: 500; fill: var(--muted); font-variant-numeric: tabular-nums; }
+    .cat      { font-size: 20px; font-weight: 600; fill: var(--secondary); }
+    .axis-cap { font-size: 18px; font-weight: 500; fill: var(--muted); }
+    .value    { font-size: 18px; font-weight: 600; fill: var(--ink); }
+    .value-lo { font-size: 18px; font-weight: 500; fill: var(--muted); }
+    .note     { font-size: 19px; font-weight: 400; fill: var(--muted); }
+    .grid     { stroke: var(--grid); stroke-width: 1; }
+    .axis     { stroke: var(--axis); stroke-width: 1; }
+    .accent   { fill: var(--accent); }
+    .foil     { fill: var(--foil); }
+  </style>
+
+  <rect width="1200" height="620" fill="var(--surface)"/>
+
+  <text class="eyebrow" x="72" y="54">BEAM · 1,748 BLOCKS · 1 MiB PAYLOAD</text>
+  <text class="title" x="72" y="97">Frames emitted before the file is complete</text>
+
+  <!-- legend: always present at two series; identity never rests on hue alone -->
+  <rect class="accent" x="72" y="121" width="14" height="14" rx="3"/>
+  <text class="legend" x="96" y="134">a fountain code</text>
+  <rect class="foil" x="290" y="121" width="14" height="14" rx="3"/>
+  <text class="legend" x="314" y="134">numbered chunks on a loop</text>
+
+  <!-- gridlines (hairline, solid, one step off the surface) + tick labels -->
+  <line class="grid" x1="140" y1="170" x2="1150" y2="170"/>
+  <line class="grid" x1="140" y1="249" x2="1150" y2="249"/>
+  <line class="grid" x1="140" y1="328" x2="1150" y2="328"/>
+  <line class="grid" x1="140" y1="407" x2="1150" y2="407"/>
+  <line class="axis" x1="140" y1="486" x2="1150" y2="486"/>
+
+  <text class="tick" x="125" y="176" text-anchor="end">16×</text>
+  <text class="tick" x="125" y="255" text-anchor="end">12×</text>
+  <text class="tick" x="125" y="334" text-anchor="end">8×</text>
+  <text class="tick" x="125" y="413" text-anchor="end">4×</text>
+  <text class="tick" x="125" y="492" text-anchor="end">0</text>
+
+  <!-- 0% loss -->
+  <path class="accent" d="M215.25 486 V470.26 Q215.25 465.26 220.25 465.26 H252.25 Q257.25 465.26 257.25 470.26 V486 Z"/>
+  <path class="foil"   d="M275.25 486 V471.25 Q275.25 466.25 280.25 466.25 H312.25 Q317.25 466.25 317.25 471.25 V486 Z"/>
+  <text class="value"    x="236.25" y="454" text-anchor="middle">1.05×</text>
+  <text class="value-lo" x="296.25" y="455" text-anchor="middle">1.00×</text>
+
+  <!-- 10% loss -->
+  <path class="accent" d="M467.75 486 V459.8 Q467.75 454.8 472.75 454.8 H504.75 Q509.75 454.8 509.75 459.8 V486 Z"/>
+  <path class="foil"   d="M527.75 486 V414.17 Q527.75 409.17 532.75 409.17 H564.75 Q569.75 409.17 569.75 414.17 V486 Z"/>
+  <text class="value"    x="488.75" y="444" text-anchor="middle">1.58×</text>
+  <text class="value-lo" x="548.75" y="398" text-anchor="middle">3.89×</text>
+
+  <!-- 30% loss -->
+  <path class="accent" d="M720.25 486 V450.31 Q720.25 445.31 725.25 445.31 H757.25 Q762.25 445.31 762.25 450.31 V486 Z"/>
+  <path class="foil"   d="M780.25 486 V352.36 Q780.25 347.36 785.25 347.36 H817.25 Q822.25 347.36 822.25 352.36 V486 Z"/>
+  <text class="value"    x="741.25" y="434" text-anchor="middle">2.06×</text>
+  <text class="value-lo" x="801.25" y="336" text-anchor="middle">7.02×</text>
+
+  <!-- 50% loss -->
+  <path class="accent" d="M972.75 486 V435.9 Q972.75 430.9 977.75 430.9 H1009.75 Q1014.75 430.9 1014.75 435.9 V486 Z"/>
+  <path class="foil"   d="M1032.75 486 V269.4 Q1032.75 264.4 1037.75 264.4 H1069.75 Q1074.75 264.4 1074.75 269.4 V486 Z"/>
+  <text class="value"    x="993.75" y="420" text-anchor="middle">2.79×</text>
+  <text class="value-lo" x="1053.75" y="253" text-anchor="middle">11.22×</text>
+  <text class="cat" x="266.25" y="518" text-anchor="middle">0%</text>
+  <text class="cat" x="518.75" y="518" text-anchor="middle">10%</text>
+  <text class="cat" x="771.25" y="518" text-anchor="middle">30%</text>
+  <text class="cat" x="1023.75" y="518" text-anchor="middle">50%</text>
+  <text class="axis-cap" x="645" y="552" text-anchor="middle">frame loss</text>
+
+  <text class="note" x="72" y="592">Seeded PRNG, independent loss, mean of 20 seeds · qrdrop 0.6.0 · stan-ely.com</text>
+</svg>

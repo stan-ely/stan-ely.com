@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bevan Stanely — Resume</title>
+  <style>/* Print-oriented, single-column, ATS-safe resume stylesheet.
+   No multi-column layout, no text in images, simple linear DOM order. */
+
+@page {
+  size: A4;
+  margin: 11mm 13mm 11mm 13mm;
+}
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #555;
+  --rule: #c9c9c9;
+  --accent: #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Calibri", "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.28;
+  color: var(--ink);
+}
+
+/* ---- Header ---- */
+header.resume-header {
+  margin-bottom: 6px;
+}
+
+h1.name {
+  font-size: 19pt;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.title {
+  font-size: 11.5pt;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 2px 0 4px;
+}
+
+.contact {
+  font-size: 9pt;
+  color: var(--muted);
+}
+
+.contact a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.contact .sep {
+  margin: 0 6px;
+  color: var(--rule);
+}
+
+/* ---- Sections ---- */
+section {
+  margin-top: 8px;
+}
+
+h2.section-title {
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin: 0 0 5px;
+  padding-bottom: 2px;
+  border-bottom: 1.2px solid var(--rule);
+}
+
+.summary {
+  margin: 0;
+}
+
+/* ---- Entries (experience / projects / education) ---- */
+.entry {
+  margin-bottom: 6px;
+  page-break-inside: avoid;
+}
+
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.entry-title {
+  font-weight: 700;
+}
+
+.entry-org {
+  font-weight: 600;
+}
+
+.entry-meta {
+  color: var(--muted);
+  font-size: 9pt;
+  white-space: nowrap;
+}
+
+.entry-sub {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 9.5pt;
+  margin: 1px 0 2px;
+}
+
+ul.bullets {
+  margin: 3px 0 0;
+  padding-left: 16px;
+}
+
+ul.bullets li {
+  margin-bottom: 2px;
+}
+
+.links {
+  font-size: 9pt;
+  margin-top: 2px;
+}
+
+.links a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.links .sep {
+  margin: 0 6px;
+  color: var(--rule);
+}
+
+/* ---- Skills ---- */
+.skill-row {
+  margin-bottom: 3px;
+}
+
+.skill-cat {
+  font-weight: 700;
+}
+
+/* ---- Compact two-line lists (certs / achievements) ---- */
+ul.flat {
+  margin: 3px 0 0;
+  padding-left: 16px;
+}
+
+ul.flat li {
+  margin-bottom: 2px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---- Screen-only web view.
+   Playwright's PDF export renders "print" media, so nothing below reaches the
+   downloadable file. That cuts both ways: this stylesheet is the single source
+   for BOTH the hosted page and static/resume.pdf, so every web-facing change
+   MUST stay inside a `screen` media block. The rules above — @page, :root, and
+   every pt value — are the PDF and are frozen. ---- */
+@media screen {
+  body {
+    background: #f3f2f0;
+    /* 12px was unreadable beside pt-derived headings. Screen gets its own px
+       scale so the print pt scale can stay exactly as it is. */
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Remap the print pt scale to screen px. Previously only `body` was remapped,
+     so 9pt metadata (= 12px) rendered at the same size as 12px body copy and
+     the hierarchy collapsed. */
+  h1.name          { font-size: 26px; }
+  .title           { font-size: 16px; }
+  .contact         { font-size: 13px; }
+  h2.section-title { font-size: 14px; }
+  .entry-meta      { font-size: 13px; }
+  .entry-sub       { font-size: 13.5px; }
+  .links           { font-size: 13px; }
+  .skill-row,
+  ul.bullets li,
+  ul.flat li       { font-size: 15px; }
+
+  .resume-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px 40px;
+    font-family: "Calibri", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* ink-signal neutral-600, matching the site this page links back to. */
+  .resume-nav a {
+    color: #4c4a48;
+    text-decoration: none;
+  }
+
+  /* ink-signal primary-600. */
+  .resume-nav a:hover {
+    color: #b45800;
+    text-decoration: underline;
+  }
+
+  .resume-page {
+    max-width: 800px;
+    margin: 0 auto 48px;
+    padding: 32px 40px 48px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .entry-head {
+    flex-wrap: wrap;
+  }
+
+  /* The contact line is one run of five items joined by <span class="sep">|</span>
+     and was wrapping mid-separator. Flex wrapping keeps each separator glued to
+     its neighbours. */
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .contact a {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ---- Mobile. Screen-only, so the A4 output is untouched. 700px is just under
+   the 800px sheet plus its 80px of fixed side padding — the width at which
+   those 40px gutters start eating a fifth of the viewport. ---- */
+@media screen and (max-width: 700px) {
+  body {
+    font-size: 16px;
+  }
+
+  .resume-nav {
+    padding: 12px 16px;
+    font-size: 13px;
+    gap: 12px;
+  }
+
+  .resume-page {
+    max-width: none;
+    margin: 0 0 24px;
+    padding: 20px 16px 32px;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  h1.name          { font-size: 22px; }
+  .title           { font-size: 15px; }
+  h2.section-title { font-size: 13.5px; letter-spacing: 0.6px; }
+
+  /* space-between right-aligns a wrapped meta line under a left-aligned title,
+     which reads as a mistake. On mobile the head is simply two stacked lines. */
+  .entry-head {
+    display: block;
+  }
+
+  .entry-meta {
+    white-space: normal;   /* print keeps nowrap */
+    margin-top: 2px;
+  }
+
+  ul.bullets,
+  ul.flat {
+    padding-left: 20px;
+  }
+
+  .contact .sep {
+    margin: 0 5px;
+  }
+}
+
+/* ---- Dark chrome, screen-only.
+   This document is standalone with no JS, so it cannot read the site's
+   class-based appearance toggle; prefers-color-scheme is the only signal
+   available. The sheet deliberately stays white in both modes — it is a paper
+   document, and the page it links to is a printed PDF. Only the surround is
+   themed, in ink-signal values so it sits comfortably next to stan-ely.com. ---- */
+@media screen and (prefers-color-scheme: dark) {
+  body {
+    background: #242220;          /* neutral-800, the site's dark page bg */
+  }
+
+  .resume-nav a {
+    color: #dcdbd9;               /* neutral-100 */
+  }
+
+  .resume-nav a:hover {
+    color: #fbbf24;               /* primary-400 */
+  }
+
+  .resume-page {
+    border-color: #383634;        /* neutral-700 */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  }
+}
+
+@media print {
+  .resume-nav {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+  <nav class="resume-nav">
+    <a href="https://stan-ely.com/about">&larr; Back to site</a>
+    <a href="/resume.pdf">Download PDF</a>
+  </nav>
+  <div class="resume-page">
+  <header class="resume-header">
+    <h1 class="name">Bevan Stanely</h1>
+<div class="title">GenAI Strategist & Engineer</div>    <div class="contact"><span>Bangalore, India</span><span class="sep">|</span><a href="mailto:bevanstanely@outlook.com">bevanstanely@outlook.com</a><span class="sep">|</span><a href="https://stan-ely.com/about">stan-ely.com/about</a><span class="sep">|</span><a href="https://www.linkedin.com/in/stan-ely/">LinkedIn</a><span class="sep">|</span><a href="https://github.com/stan-ely">GitHub</a>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="section-title">Summary</h2>
+    <p class="summary">GenAI practitioner who shapes AI strategy and builds the systems underneath it — from AI Over BI natural-language analytics and finance data-transformation PRDs to production LLM backends, ML/CV pipelines, and low-level GPU/Rust/WASM systems shipped end to end. Backed by an MBA in Business Analytics and hands-on delivery on AWS and GCP.</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">Experience</h2>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Full Stack LLM Development Analyst — Finance Data Transformation</span> — <span class="entry-org">Accenture</span></div>
+        <div class="entry-meta">Bangalore, India | Apr 2026
+        </div>
+      </div>
+      <ul class="bullets">
+<li>Built AI Over BI natural-language analytics on an in-house framework — grounded the system in finance data models via semantic-layer mapping, tested that NL queries resolved to the correct metrics and dimensions, and automated JSON configs (Google Apps Script) for 13+ usecases.</li><li>Owned requirements-to-acceptance with business and strategy stakeholders for 3+ finance data transformation usecases — translated needs into source-to-target specs and Claude-assisted PRDs, drove BRD/PRD sign-off, and drove UAT discussions to validate delivered outputs.</li><li>Owned the data layer testing framework — a custom SQL test harness running source-to-target reconciliation alongside null, duplicate, and referential integrity checks across finance data transformation usecases, automating cross-system checks and reducing manual QA effort.</li><li>Took ownership of RBAC across 5+ systems (GCP projects, Git repositories, internal tools) without documentation — mapped the permission model, defined role tiers, executed assignments, and established a shared Git repository with tiered approval workflows.</li>      </ul>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Full Stack LLM Development Analyst — GenAI Experience Platform</span> — <span class="entry-org">Accenture</span></div>
+        <div class="entry-meta">Bangalore, India | Jan 2026 – Mar 2026
+        </div>
+      </div>
+      <ul class="bullets">
+<li>Owned the design and deployment of a production-ready backend pipeline enabling end-to-end image generation, persona detection, and secure UI workflows using AWS Lambda, API Gateway, and containerized services, validated through full E2E testing.</li><li>Implemented enterprise-grade integrations and resilience controls, including a secure authentication wrapper over a third-party API and a fallback image-generation strategy using AWS Bedrock to ensure reliability under peak load, while cutting perceived latency through video best-frame optimization.</li>      </ul>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Full Stack LLM Development Analyst — CV/ML Architecture & Pipeline Execution (POC)</span> — <span class="entry-org">Accenture</span></div>
+        <div class="entry-meta">Bangalore, India | Oct 2025 – Dec 2025
+        </div>
+      </div>
+      <ul class="bullets">
+<li>Built and validated end-to-end ML/CV training and inference pipelines — data ingestion, feature engineering, and spatio-temporal processing — with model debugging and accuracy checks to stabilize outputs across seasons.</li>      </ul>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Financial Operations Analyst Intern</span> — <span class="entry-org">HSBC</span></div>
+        <div class="entry-meta">Gurugram, India | Jan 2025 – Jul 2025
+        </div>
+      </div>
+      <ul class="bullets">
+<li>Led design and automation of regulatory reporting workflows, integrating data from multiple internal systems, and partnered with compliance and risk managers to translate regulatory requirements into scalable process solutions.</li>      </ul>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Risk Analyst Intern</span> — <span class="entry-org">Indialends</span></div>
+        <div class="entry-meta">Gurugram, India | May 2024 – Jul 2024
+        </div>
+      </div>
+      <ul class="bullets">
+<li>Automated risk and performance reporting pipelines for 1,300+ loans (saving 48+ hours annually) and built SQL-based validation checks to enhance loan-data integrity for reporting and compliance.</li>      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Projects</h2>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">lakehouse-rag — Enterprise RAG with Access Control</span></div>
+      </div>
+<div class="entry-sub">Personal Project</div>      <ul class="bullets">
+<li>Built an enterprise RAG system over PDFs, a wiki, tickets, Slack, email and a live Postgres database, routing each question to hybrid search, guarded text-to-SQL or both, with per-caller access control enforced by row-level security and a CI gate of zero ACL leaks.</li><li>Ingested through a Spark/Delta Lake medallion lakehouse on Databricks and ran it end to end on AWS (S3, SQS, Lambda, RDS, Bedrock) via Terraform: 0.917 answer correctness, 0.986 recall@k and $0.014 per 121-question evaluation run.</li>      </ul>
+      <div class="links">
+<a href="https://github.com/stan-ely/lakehouse-rag">Code</a>      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Research Summarizer using RAG + Multi-Agent LLMs</span></div>
+      </div>
+<div class="entry-sub">AI & Knowledge Management</div>      <ul class="bullets">
+<li>Built a RAG-based summarization pipeline for 1,000+ research papers, combining retrieval with sequential agents (CoT planner -> associative reasoning -> composer) and a Streamlit chatbot UI for grounded, interactive synthesis.</li>      </ul>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">WhisperForge — GPU-Accelerated Speech-to-Text in Rust</span></div>
+      </div>
+<div class="entry-sub">Personal Project</div>      <ul class="bullets">
+<li>Built a high-performance Rust implementation of OpenAI's Whisper speech-to-text with GPU acceleration (Burn + WGPU; Vulkan/DX12/Metal), delivering SOTA decoding (beam search, temperature fallback, quality gates) on par with faster-whisper.</li><li>Engineered per-token timestamps via cross-attention peaks (~100 ms precision) and speaker diarization, with INT8 quantization for ~4x model compression and real-time streaming transcription; shipped as a `wforge` CLI on crates.io.</li>      </ul>
+      <div class="links">
+<a href="https://github.com/stan-ely/WhisperForge">Code</a>      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">Edge Embeddings + Rust/WASM Recommender</span></div>
+      </div>
+<div class="entry-sub">Personal Project</div>      <ul class="bullets">
+<li>Quantized and compressed embeddings (~4x smaller) into a Rust/WASM pipeline with MessagePack data bundles, delivering low-latency, in-browser song recommendations running entirely on the edge with no server round-trips.</li>      </ul>
+      <div class="links">
+<a href="https://stan-ely.com/posts/2025/demo-edge-song-recommendation/">Blog</a><span class="sep">|</span><a href="https://github.com/stan-ely/rustic-rhythms">Code</a>      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">qrdrop — Encrypted Peer-to-Peer File Transfer</span></div>
+      </div>
+<div class="entry-sub">Personal Project</div>      <ul class="bullets">
+<li>Built an end-to-end encrypted, serverless file-transfer tool: a QR code carries the key, ephemeral ECDH with per-chunk AES-GCM secures the WebRTC channel, and a four-emoji SAS check confirms the pairing; an air-gapped mode streams files as fountain-coded QR frames.</li><li>Ran one protocol core across browser, Node CLI and a Tauri desktop/mobile app, shipped via npm, Homebrew, Scoop, the Microsoft Store and a self-hosted F-Droid repository with reproducible builds.</li>      </ul>
+      <div class="links">
+<a href="https://share.stan-ely.com">Live</a><span class="sep">|</span><a href="https://github.com/stan-ely/qrdrop">Code</a>      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Skills &amp; Tools</h2>
+    <div class="skill-row"><span class="skill-cat">Generative AI & LLMs:</span> RAG, Text-to-SQL, Multi-Agent Orchestration, Chain-of-Thought Reasoning, LangChain</div>
+    <div class="skill-row"><span class="skill-cat">Cloud & Platforms:</span> AWS (Lambda, API Gateway, ECR, IAM, Bedrock, S3, SQS, RDS), Databricks, GCP (Vertex AI, Gemini)</div>
+    <div class="skill-row"><span class="skill-cat">Programming:</span> Python, Rust, JavaScript (Node.js), CUDA C++, SQL (T-SQL, Spark SQL)</div>
+    <div class="skill-row"><span class="skill-cat">Data Engineering & Automation:</span> Scalable pipelines, SQL-based data validation, Workflow automation, Robotic Process Automation</div>
+    <div class="skill-row"><span class="skill-cat">Business & Analytics:</span> Requirements & PRDs, Source-to-Target Mapping, Corporate Strategy, Tableau</div>
+    <div class="skill-row"><span class="skill-cat">Tools:</span> Terraform, Docker, Git, Jupyter</div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Education</h2>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">MBA — Business Analytics</span> — <span class="entry-org">Birla Institute of Technology & Science (BITS) Pilani</span></div>
+        <div class="entry-meta">2023–2025 | 87.3%
+        </div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">M.Sc. — Computational Biology</span> — <span class="entry-org">Indian Institute of Science (IISc) Bengaluru</span></div>
+        <div class="entry-meta">2019–2023 | 74%
+        </div>
+      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div><span class="entry-title">B.Sc. — Biological Sciences</span> — <span class="entry-org">Bangalore University</span></div>
+        <div class="entry-meta">2016–2019 | 71.4%
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Certifications</h2>
+    <ul class="flat">
+<li><a href="https://www.credly.com/badges/fd18c797-1618-4bd4-a6b1-f1b961e27a73/public_url" target="_blank">Claude Certified Architect – Foundations</a> <span class="muted">— Anthropic</span></li><li><a href="https://credentials.databricks.com/fcc7f85f-b5c3-4748-a1c5-e92cc3e7924d#acc.aQ2sl7CO" target="_blank">Generative AI Associate</a> <span class="muted">— Databricks</span></li><li><a href="https://credentials.databricks.com/1f1dc9de-4196-4b03-971c-a29042e543ff#acc.6nBlFxDC" target="_blank">Data Engineer Professional</a> <span class="muted">— Databricks</span></li><li><a href="https://learn.microsoft.com/api/credentials/share/en-us/BevanStanely-6868/BC6253C8C487CCC2?sharingId=93F65D27DCD2C91A" target="_blank">Azure AI Engineer Associate</a> <span class="muted">— Microsoft</span></li><li><a href="https://badges.iiba.org/4e33ddf3-3951-43fe-a674-30f1db10ca67#acc.K2nxtgM1" target="_blank">Entry Certificate in Business Analysis (ECBA)</a> <span class="muted">— IIBA</span></li><li>Cloud Technical Essentials <span class="muted">— AWS</span></li>    </ul>
+  </section>
+
+  <section>
+    <h2 class="section-title">Achievements</h2>
+    <ul class="flat">
+<li>AIR 24 in Joint CSIR-UGC NET (2019)</li><li>AIR 64 in IIT JAM (2019)</li>    </ul>
+  </section>
+  </div>
+</body>
+</html>

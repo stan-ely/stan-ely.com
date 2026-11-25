@@ -1,0 +1,339 @@
+/* Song recommendation demo — scoped styles.
+ *
+ * This file is pulled in with a plain <link rel="stylesheet"> from index.md, so
+ * it is a DOCUMENT-LEVEL stylesheet: anything unscoped here restyles the whole
+ * page. The previous version had bare `label`, `input[type="number"]` and
+ * `button` rules, which repainted the theme's appearance switcher, nav buttons
+ * and the giscus comment controls on this post only. Every selector below is
+ * therefore prefixed with `.song-app`, and the local custom properties live on
+ * `.song-app` (not `:root`) so they cannot leak either.
+ *
+ * Colours are derived from the site's "Ink & Signal" scheme tokens
+ * (space-separated RGB triplets, consumed via rgb(var(--token))), so the demo
+ * tracks the site palette instead of hardcoding its own greys.
+ */
+
+.song-app {
+  --song-surface: rgb(var(--color-neutral-50));
+  --song-surface-raised: rgb(var(--color-neutral));
+  --song-border: rgb(var(--color-neutral-100));
+  --song-border-strong: rgb(var(--color-neutral-300));
+  --song-text: rgb(var(--color-neutral-800));
+  --song-text-muted: rgb(var(--color-neutral-600));
+  --song-accent: rgb(var(--color-primary-600));
+  --song-accent-hover: rgb(var(--color-primary-700));
+  --song-on-accent: rgb(var(--color-neutral-50));
+  --song-danger: rgb(var(--color-primary-900));
+  --song-danger-surface: rgb(var(--color-primary-50));
+  --song-shadow: 0 1.5px 8px rgb(var(--color-neutral-900) / 0.07);
+  --song-shadow-raised: 0 4px 20px rgb(var(--color-neutral-900) / 0.13);
+}
+
+/* The dark background rendered by the theme is neutral-800 (#242220), so the
+ * demo's surfaces sit one step above/below that rather than at neutral-900. */
+html.dark .song-app {
+  --song-surface: rgb(var(--color-neutral-700));
+  --song-surface-raised: rgb(var(--color-neutral-600));
+  --song-border: rgb(var(--color-neutral-600));
+  --song-border-strong: rgb(var(--color-neutral-400));
+  --song-text: rgb(var(--color-neutral-100));
+  --song-text-muted: rgb(var(--color-neutral-200));
+  --song-accent: rgb(var(--color-primary-400));
+  --song-accent-hover: rgb(var(--color-primary-300));
+  --song-on-accent: rgb(var(--color-neutral-900));
+  --song-danger: rgb(var(--color-primary-200));
+  --song-danger-surface: rgb(var(--color-neutral-800));
+  --song-shadow: 0 1.5px 8px rgb(0 0 0 / 0.35);
+  --song-shadow-raised: 0 4px 20px rgb(0 0 0 / 0.45);
+}
+
+.song-app {
+  margin: 2rem 0;
+  color: var(--song-text);
+}
+
+/* ---------- Form ---------- */
+
+.song-app label {
+  display: block;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+  color: var(--song-text);
+}
+
+.song-app .input-container {
+  margin-bottom: 0.8rem;
+}
+
+.song-app input[type="number"] {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  font-size: 1.08rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--song-border);
+  background: var(--song-surface);
+  color: var(--song-text);
+  transition: border-color 0.3s, background 0.3s;
+  outline: none;
+}
+
+.song-app input[type="number"]:focus {
+  border-color: var(--song-accent);
+  background: var(--song-surface-raised);
+  box-shadow: 0 0 0 3px rgb(var(--color-primary-400) / 0.35);
+}
+
+.song-app input[type="number"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.song-app .input-error {
+  border-color: var(--song-danger);
+  background: var(--song-danger-surface);
+}
+
+.song-app button {
+  margin-top: 0.7rem;
+  width: 100%;
+  padding: 0.9rem 0;
+  background-color: var(--song-accent);
+  border: none;
+  border-radius: 10px;
+  color: var(--song-on-accent);
+  font-weight: 700;
+  font-size: 1.13rem;
+  cursor: pointer;
+  transition: background-color 0.22s, box-shadow 0.18s;
+  letter-spacing: 0.05em;
+  box-shadow: var(--song-shadow);
+}
+
+.song-app button:disabled {
+  background-color: var(--song-border-strong);
+  color: var(--song-on-accent);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.song-app button:not(:disabled):hover {
+  background-color: var(--song-accent-hover);
+  box-shadow: var(--song-shadow-raised);
+}
+
+.song-app button:focus-visible {
+  outline: 2px solid var(--song-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Status / error text ---------- */
+
+/* Loading + failure messages for the 1.3MB model fetch. Persistent by design:
+ * a toast that self-removes after 2.5s left the demo looking functional while
+ * every query failed. */
+.song-app .song-status {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--song-text-muted);
+}
+
+.song-app .song-status:empty {
+  display: none;
+}
+
+.song-app .song-status.is-error {
+  color: var(--song-danger);
+}
+
+.song-app .song-status button {
+  width: auto;
+  margin-top: 0.5rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.95rem;
+  letter-spacing: normal;
+}
+
+.song-app .error-message {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: var(--song-danger);
+}
+
+.song-app .error-message:empty {
+  display: none;
+}
+
+/* ---------- Results ---------- */
+
+.song-app #results {
+  margin-top: 2rem;
+}
+
+.song-app .results-heading {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--song-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* No max-height here: an inner scroll region nested inside the page scroll is a
+ * mobile trap, and ten cards are short enough to just lay out inline. */
+.song-app .result-list {
+  background: var(--song-surface);
+  border-radius: 14px;
+  padding: 1rem 0.85rem 0.65rem 0.85rem;
+  font-size: 1.01rem;
+  box-shadow: var(--song-shadow);
+}
+
+.song-app .result-item {
+  margin-bottom: 0.55em;
+  color: var(--song-text-muted);
+}
+
+/* ---------- Song cards ---------- */
+
+.song-app .song-card {
+  background: var(--song-surface);
+  color: var(--song-text);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 14px 0;
+  box-shadow: var(--song-shadow);
+  border: 1.5px solid var(--song-border);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.18s, border-color 0.18s, background 0.18s;
+}
+
+.song-app .song-card:hover {
+  box-shadow: var(--song-shadow-raised);
+  border-color: var(--song-border-strong);
+  background: var(--song-surface-raised);
+}
+
+.song-app .song-title {
+  font-size: 1.18em;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+  color: var(--song-text);
+}
+
+.song-app .song-artist {
+  font-size: 1.04em;
+  color: var(--song-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.song-app #songDetails {
+  background: var(--song-surface);
+  color: var(--song-text);
+  border-radius: 12px;
+  margin-bottom: 1.1em;
+  font-size: 1.08em;
+  font-weight: 500;
+  transition: background 0.18s, border-color 0.18s;
+  display: none;
+}
+
+.song-app #songDetails.active {
+  display: block;
+}
+
+/* ---------- Toast notifications ---------- */
+
+/* z-index ladder on this site: 100 sticky header < 150 song toast
+ * < 200 cookie banner < 500 search overlay. The old four-digit value here put
+ * demo toasts over the search modal. */
+.song-app #song-toast-container {
+  position: fixed;
+  z-index: 150;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.song-app .song-toast {
+  background: var(--song-text);
+  color: var(--song-surface-raised);
+  padding: 0.9em 1.4em;
+  margin-top: 0.4em;
+  border-radius: 7px;
+  font-size: 1rem;
+  max-width: min(90vw, 24rem);
+  box-shadow: var(--song-shadow-raised);
+  opacity: 0;
+  animation: song-toast-in 0.5s forwards, song-toast-out 0.5s 2s forwards;
+  pointer-events: auto;
+}
+
+@keyframes song-toast-in {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes song-toast-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .song-app .song-toast {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+/* Desktop: wider card, more padding, larger font */
+@media (min-width: 900px) {
+  .song-app .song-card {
+    padding: 24px 32px;
+    font-size: 1.08em;
+  }
+  .song-app .song-title {
+    font-size: 1.25em;
+  }
+  .song-app .song-artist {
+    font-size: 1.08em;
+  }
+}
+
+/* Mobile: full width, no shadow, less padding. The old block carried this
+ * comment but only nudged the toast container; now it does what it says. */
+@media (max-width: 600px) {
+  .song-app .song-card {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 14px 16px;
+    box-shadow: none;
+  }
+  .song-app .result-list {
+    padding: 0.75rem 0.5rem 0.5rem 0.5rem;
+    box-shadow: none;
+  }
+  .song-app #song-toast-container {
+    right: 0;
+    left: 0;
+    bottom: 1.2rem;
+    align-items: center;
+  }
+  .song-app .song-toast {
+    max-width: calc(100vw - 2rem);
+  }
+}
